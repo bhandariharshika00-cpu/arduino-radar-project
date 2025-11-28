@@ -1,0 +1,27 @@
+# Arduino Radar System
+
+## Description
+This project is a simple radar system using an Arduino, ultrasonic sensor, and a servo motor to detect objects in a sweep motion.
+
+## Components
+- Arduino Uno/Nano
+- HC-SR04 Ultrasonic Sensor
+- Servo motor
+- Jumper wires
+- Breadboard
+
+## Wiring
+- HC-SR04 Trigger → Arduino pin 9
+- HC-SR04 Echo → Arduino pin 10
+- Servo PWM → Arduino pin 6
+- Power and GND connections accordingly
+
+## How to Run
+1. Open `src/ArduinoRadar.ino` in Arduino IDE
+2. Install [NewPing library](https://github.com/microflo/NewPing)
+3. Upload code to Arduino
+4. Open Serial Monitor to view distances
+5. Watch the servo sweep objects
+
+## Author
+Your Name
