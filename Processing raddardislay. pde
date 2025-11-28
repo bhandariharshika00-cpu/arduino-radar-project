@@ -1,0 +1,63 @@
+import processing.serial.*;
+
+Serial myPort;        // The serial port
+float angle = 0;      // Current angle of radar
+float distance = 0;   // Distance from Arduino
+
+void setup() {
+  size(400, 400);
+  background(0);
+  smooth();
+  fill(0, 255, 0);
+  
+  // List all the available serial ports
+  println(Serial.list());
+  
+  // Change the [0] to the port where your Arduino is connected
+  myPort = new Serial(this, Serial.list()[0], 9600);
+}
+
+void draw() {
+  background(0);
+  translate(width/2, height/2); // Center of radar
+  
+  stroke(0, 255, 0);
+  strokeWeight(2);
+  
+  // Draw radar circle
+  noFill();
+  ellipse(0, 0, 350, 350);
+  
+  // Read data from Arduino
+  if (myPort.available() > 0) {
+    String inString = myPort.readStringUntil('\n');
+    if (inString != null) {
+      inString = trim(inString);
+      // Expecting: "Angle: 90 Distance: 50"
+      String[] parts = split(inString, ' ');
+      if (parts.length >= 4) {
+        angle = float(parts[1]);
+        distance = float(parts[3]);
+      }
+    }
+  }
+  
+  // Map distance to pixel radius
+  float radius = map(distance, 0, 200, 0, 175);
+  
+  // Convert angle to radians
+  float rad = radians(angle - 90);
+  
+  // Calculate x, y
+  float x = radius * cos(rad);
+  float y = radius * sin(rad);
+  
+  // Draw radar line
+  stroke(0, 255, 0);
+  line(0, 0, x, y);
+  
+  // Draw point
+  fill(0, 255, 0);
+  noStroke();
+  ellipse(x, y, 10, 10);
+}
