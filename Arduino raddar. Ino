@@ -1,0 +1,39 @@
+#include <Servo.h>
+#include <NewPing.h>
+
+#define TRIGGER_PIN  9
+#define ECHO_PIN     10
+#define MAX_DISTANCE 200  // cm
+#define SERVO_PIN    6
+
+Servo radarServo;
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+
+void setup() {
+  Serial.begin(9600);
+  radarServo.attach(SERVO_PIN);
+}
+
+void loop() {
+  for (int angle = 0; angle <= 180; angle += 10) {
+    radarServo.write(angle);
+    delay(200);
+    int distance = sonar.ping_cm();
+    Serial.print("Angle: ");
+    Serial.print(angle);
+    Serial.print("° Distance: ");
+    Serial.print(distance);
+    Serial.println(" cm");
+  }
+
+  for (int angle = 180; angle >= 0; angle -= 10) {
+    radarServo.write(angle);
+    delay(200);
+    int distance = sonar.ping_cm();
+    Serial.print("Angle: ");
+    Serial.print(angle);
+    Serial.print("° Distance: ");
+    Serial.print(distance);
+    Serial.println(" cm");
+  }
+}
